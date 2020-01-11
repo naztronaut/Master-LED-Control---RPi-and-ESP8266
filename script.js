@@ -1,6 +1,8 @@
 let config = {
     url: 'http://192.168.1.225',
-    multi: true
+    multi: true,
+    mqttHost: "192.168.1.244",
+    mqttPort: 1884
 };
 
 let globalStatus = 0;
@@ -195,7 +197,8 @@ $(document).ready(function() {
      * @type {*|AudioNode|void|*}
      */
 
-    let client = mqtt.connect({servers : [{ host: "192.168.1.244", port: 1884}], username : "hassmqtt", password :"hassmqtt1!"});
+    // Change your username and pass to your mqtt broker - example username and password filled in below
+    let client = mqtt.connect({servers : [{ host: config.mqttHost, port: config.mqttPort}], username : "hassmqtt", password :"hassmqtt1!"});
     getInitStatus();
     client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status']);
     let rightLedStatus;
