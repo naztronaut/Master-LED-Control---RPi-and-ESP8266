@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Easy Programming - Master LED Control</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="includes/jquery.min.js"></script>
+        <link rel="stylesheet" href="includes/bootstrap.min.css">
+        <script src="includes/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="includes/classic.min.css"/>
+        <script src="includes/pickr.min.js"></script>
+        <link id="favicon" rel="icon" type="image/x-icon" href="favicon.ico">
+        <link href="includes/sourcecodepro.css" rel="stylesheet">
+        <link href="includes/obitron.css" rel="stylesheet">
+   		<script src="includes/wNumb.js"></script>
+        <link href="includes/nouislider.min.css" rel="stylesheet">
+        <script src="includes/nouislider.min.js"></script>
+                <script src="https://unpkg.com/mqtt@3.0.0/dist/mqtt.min.js"></script>
+
+        <script src="script.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark d-flex justify-content-between">
+          <div class="p-2"><a class="navbar-brand" href="#">Easy Programming </a></div> 
+            <div class="p-2"><span id="subtitle">LED Control</span></div>
+        </nav>
+        <div class="container">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="lr-tab" data-toggle="tab" href="#livingRoom" role="tab" aria-controls="livingRoom" aria-selected="true">LivingRoom</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="kitchen-tab" data-toggle="tab" href="#kitchen" role="tab" aria-controls="kitchen" aria-selected="false">Kitchen</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="roomTabContent">
+                <div class="spinner-parent bg-white">
+                    <div class="center-container">
+                        <div class="d-flex justify-content-center loader">
+                            <div class="spinner-border text-info m-5" role="status">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+              <div class="tab-pane fade show active" id="livingRoom" role="tabpanel" aria-labelledby="lr-tab">
+                  <div class="row">
+                    <div class="col">
+                        <div id="wSlider"></div>
+                    </div>
+                    </div>
+                    <div class="row secondRowSlider">
+                        <div class="col">
+                            <div id="slider"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="color-picker"></div>
+                        </div>
+                    </div>
+              </div>
+              <div class="tab-pane fade" id="kitchen" role="tabpanel" aria-labelledby="kitchen-tab">
+                  <div class="row">
+                    <div class="col">
+                        <button type="button" class="btn btn-block btn-dark" id="btnToggle">Turn On</button>
+                    </div>
+                </div>
+                <div id="multi">
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn btn-block btn-dark single" id="kitchenleft" data-side="Left">Left On</button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-block btn-dark single" id="kitchenright" data-side="Right">Right On</button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </body>
+</html>
