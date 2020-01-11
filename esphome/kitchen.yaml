@@ -1,0 +1,71 @@
+## The YAML code below is for "Kitchen Left" - can be modified as you see fit.
+## Can be flashed using ESPHome.
+esphome:
+  name: kitchenleft
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  networks:
+  - ssid: "YOUR WIFI ID"
+    password: "YOUR WIFI PASSWORD"
+
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "KitchenRight Fallback Hotspot"
+    password: "svqrjXj89wCF"
+
+captive_portal:
+
+# Enable logging
+logger:
+  level: DEBUG
+
+
+# Enable Home Assistant API
+api:
+
+
+ota:
+  port: 8266
+
+switch:
+  - platform: gpio
+    pin:
+      number: D1
+      inverted: yes
+    name: "Kitchen Left Light"
+    id: kitchenSwitch
+  - platform: restart
+    name: "Kitchen Left Restart"
+    id: kitchenRestartSwitch
+
+
+mqtt:
+  broker: 192.168.1.xxx #Your MQTT IP
+  discovery: True
+  username: "YOUR MQTT USER"
+  password: "YOUR MQTT PASSWORD"
+  on_message:
+    - topic: "led/kitchenLeft/currentStatus"
+      then:
+        - mqtt.publish:
+            topic: "led/kitchenLeft/status"
+            payload: !lambda |-
+              if(id(kitchenSwitch).state) return "{\"side\": \"left\", \"ledStatus\": \"on\"}";
+              else return "{\"side\": \"left\", \"ledStatus\": \"off\"}";
+  on_json_message:
+    topic: "led/kitchenLeft/json"
+    then:
+      - lambda: |-
+          if(x["lightStatus"] == "on"){
+            id(kitchenSwitch).turn_on();
+          } else {
+            id(kitchenSwitch).turn_off();
+          }
+      - mqtt.publish:
+          topic: "led/kitchenLeft/status"
+          payload: !lambda |-
+            if(id(kitchenSwitch).state) return "{\"side\": \"left\", \"ledStatus\": \"on\"}";
+            else return "{\"side\": \"left\", \"ledStatus\": \"off\"}";
