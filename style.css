@@ -108,3 +108,23 @@ body {
 #multi {
     display: none;
 }
+
+@media (min-width: 451px) {
+    .tabText {
+        display: block;
+    }
+
+    .tabIcon {
+        display: none;
+    }
+}
+
+@media (max-width: 450px) {
+    .tabText {
+        display: none;
+    }
+
+    .tabIcon {
+        padding: 0 0.5em;
+    }
+}

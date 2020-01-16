@@ -4,6 +4,7 @@
         <title>Easy Programming - Master LED Control</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="includes/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.7.95/css/materialdesignicons.min.css">
         <link rel="stylesheet" href="includes/bootstrap.min.css">
         <script src="includes/bootstrap.min.js"></script>
         <link rel="stylesheet" href="includes/classic.min.css"/>
@@ -14,7 +15,7 @@
    		<script src="includes/wNumb.js"></script>
         <link href="includes/nouislider.min.css" rel="stylesheet">
         <script src="includes/nouislider.min.js"></script>
-                <script src="https://unpkg.com/mqtt@3.0.0/dist/mqtt.min.js"></script>
+        <script src="https://unpkg.com/mqtt@3.0.0/dist/mqtt.min.js"></script>
 
         <script src="script.js"></script>
         <link rel="stylesheet" href="style.css">
@@ -27,10 +28,19 @@
         <div class="container">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="lr-tab" data-toggle="tab" href="#livingRoom" role="tab" aria-controls="livingRoom" aria-selected="true">LivingRoom</a>
+                <a class="nav-link active" id="lr-tab" data-toggle="tab" href="#livingRoom" role="tab" aria-controls="livingRoom" aria-selected="true">
+                    <span class="tabIcon mdi mdi-sofa"></span><span class="tabText">LivingRoom</span>
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="kitchen-tab" data-toggle="tab" href="#kitchen" role="tab" aria-controls="kitchen" aria-selected="false">Kitchen</a>
+                <a class="nav-link" id="kitchen-tab" data-toggle="tab" href="#kitchen" role="tab" aria-controls="kitchen" aria-selected="false">
+                    <span class="tabIcon mdi mdi-fridge"></span><span class="tabText">Kitchen</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="garage-tab" data-toggle="tab" href="#garage" role="tab" aria-controls="garage" aria-selected="false">
+                    <span class="tabIcon mdi mdi-car"></span><span class="tabText">Garage</span>
+                </a>
               </li>
             </ul>
             <div class="tab-content" id="roomTabContent">
@@ -74,6 +84,13 @@
                         <div class="col">
                             <button type="button" class="btn btn-block btn-dark single" id="kitchenright" data-side="Right">Right On</button>
                         </div>
+                    </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="garage" role="tabpanel" aria-labelledby="garage-tab">
+                  <div class="row">
+                    <div class="col">
+                        <button type="button" class="btn btn-block btn-dark" id="garageButton">Turn On</button>
                     </div>
                 </div>
               </div>
