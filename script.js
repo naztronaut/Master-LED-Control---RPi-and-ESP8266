@@ -200,25 +200,32 @@ $(document).ready(function() {
     // Change your username and pass to your mqtt broker - example username and password filled in below
     let client = mqtt.connect({servers : [{ host: config.mqttHost, port: config.mqttPort}], username : "hassmqtt", password :"hassmqtt1!"});
     getInitStatus();
-    client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status']);
+    client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status', 'garage/temperature', 'garage/humidity']);
     let rightLedStatus;
     let leftLedStatus;
     client.on("message", function (topic, payload) {
         let side;
         let resp = JSON.parse(payload.toString());
-        if(resp.side == 'right') {
-            rightLedStatus = (resp.ledStatus == "off") ? 0: 1;
-            globalStatus = rightLedStatus;
-            side = resp.side;
-            if(config.multi) {
-                singleButton(side, rightLedStatus);
+        console.log(topic);
+        if(topic == "led/kitchenLeft/status" || topic == "led/kitchenRight/status") {
+            if (resp.side == 'right') {
+                rightLedStatus = (resp.ledStatus == "off") ? 0 : 1;
+                globalStatus = rightLedStatus;
+                side = resp.side;
+                if (config.multi) {
+                    singleButton(side, rightLedStatus);
+                }
+            } else {
+                leftLedStatus = (resp.ledStatus == "off") ? 0 : 1;
+                side = resp.side;
+                if (config.multi) {
+                    singleButton(side, leftLedStatus);
+                }
             }
-        } else {
-            leftLedStatus = (resp.ledStatus == "off") ? 0 : 1;
-            side = resp.side;
-            if(config.multi) {
-                singleButton(side, leftLedStatus);
-            }
+        } else if (topic == "garage/temperature") {
+            handleGarageTemperature(resp);
+        } else if (topic == "garage/humidity") {
+            handleGarageHumidity(resp);
         }
         btnStatus();
     });
@@ -285,4 +292,20 @@ $(document).ready(function() {
             }
         }
     }
+
+    // garage
+    function handleGarageTemperature(temperature) {
+        console.log("temperature is: " + temperature + "\u00B0F");
+        $("#temperature").text(temperature);
+    }
+
+    function handleGarageHumidity(humidity) {
+        console.log("Humidity is: " + humidity + "%");
+        $("#humidity").text(humidity);
+    }
+
+    $("#garageButton").off().on('click', function (e) {
+        console.log('clicked');
+       client.publish("garageDoor/trigger");
+    });
 });

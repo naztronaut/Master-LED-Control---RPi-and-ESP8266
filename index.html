@@ -89,8 +89,21 @@
               </div>
               <div class="tab-pane fade" id="garage" role="tabpanel" aria-labelledby="garage-tab">
                   <div class="row">
+                      <div class="col-md" style="margin-bottom: 1em;">
+                          <div class="card" style="width: 100%  ">
+                              <ul class="list-group list-group-flush">
+                                  <li class="list-group-item d-flex justify-content-between"><span class="p-0"><span class="mdi mdi-thermometer"></span> Temperature:</span> <span class="tempHumidityAlign p-0"><span id="temperature"></span>&deg;F</span></li>
+                                  <li class="list-group-item d-flex justify-content-between"><span class="p-0"><span class="mdi mdi-water-percent"></span> Humidity:</span> <span class="tempHumidityAlign p-0"><span id="humidity"></span>%</span></li>
+                              </ul>
+                           </div>
+                      </div>
+                      <div class="col-md">
+                        <button type="button" class="btn btn-block" id="garageButton"><span class="mdi mdi-garage"></span> </button>
+                    </div>
+                  </div>
+                  <div class="row">
                     <div class="col">
-                        <button type="button" class="btn btn-block btn-dark" id="garageButton">Turn On</button>
+                        <!--<button type="button" class="btn btn-block btn-dark" id="garageButton">Turn On</button>-->
                     </div>
                 </div>
               </div>
