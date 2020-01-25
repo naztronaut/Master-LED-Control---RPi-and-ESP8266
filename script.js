@@ -375,12 +375,84 @@ $(document).ready(function() {
     diningBrightnessSlider.noUiSlider.on('change', function(e) {
        let sliderVal = (diningBrightnessSlider.noUiSlider.get()/100);
        let calculated = (Math.floor(sliderVal * 255));
-       if(calculated > 0) {
-        client.publish("dining/light/on", calculated.toString())
+       // below 25 brightness (out of 255) is 'off' for this stupid light
+       if(calculated > 25) {
+        client.publish("dining/light/on", calculated.toString());
        } else {
            client.publish("dining/light/off");
        }
 
     });
+
+    $('.color-box').off().on('click', function (e) {
+        if($(e.target).data('kelvin')) {
+            client.publish("dining/light/white", ($(e.target).data('kelvin')).toString());
+        } else if($(e.target).data('color')){
+            client.publish("dining/light/color", ($(e.target).data('color')).toString());
+        }
+    });
+
+    // const diningPickr = Pickr.create({
+    //     el: '.dining-color-picker',
+    //     theme: 'classic', // or 'monolith', or 'nano'
+    //     lockOpacity: true,
+    //     padding: 15,
+    //     inline: true,
+    //
+    //     swatches: [
+    //         'rgba(255, 0, 0, 1)',
+    //         'rgba(255, 82, 0, 1)',
+    //         'rgba(0, 255, 0, 1)',
+    //         'rgba(0, 0, 255, 1)',
+    //         'rgba(27, 161, 17, 1)',
+    //         'rgba(255, 255, 0, 1)', // yellow broken
+    //         'rgba(255, 0, 255, 1)',
+    //         'rgba(108, 16, 157, 1)',
+    //         'rgba(0, 255, 255, 1)',
+    //         'rgba(24, 139, 167, 1)',
+    //         'rgba(255, 255, 255, 1)',
+    //         'rgba(0, 0, 0, 1)',
+    //     ],
+    //
+    //     components: {
+    //
+    //         // Main components
+    //         preview: true,
+    //         opacity: false,
+    //         hue: true,
+    //
+    //         // Input / output Options
+    //         interaction: {
+    //             hex: true,
+    //             rgba: true,
+    //             // hsla: true,
+    //             // hsva: true,
+    //             // cmyk: true,
+    //             input: true,
+    //             // clear: true,
+    //             save: true
+    //         }
+    //     }
+    // });
+    //
+    // diningPickr.off().on('swatchselect', e => {
+    //     // sendData(e); // Swatchselect apparently triggers save so it triggers sendData() automatically
+    //     diningPickr.setColor(e.toRGBA().toString(0));
+    // });
+    //
+    // diningPickr.on('save', e => {
+    //     // If 'save' is being triggered by brightness changes instead
+    //     // if(rgbBrightnessChange == false) {
+    //     //     let tempColors = pickr.getColor().toRGBA();
+    //     //     currentColors.red = Math.floor(tempColors[0]);
+    //     //     currentColors.green = Math.floor(tempColors[1]);
+    //     //     currentColors.blue = Math.floor(tempColors[2]);
+    //     //     slider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
+    //     //     $('#slider .noUi-connect').css('background', `rgb(${currentColors.red}, ${currentColors.green}, ${currentColors.blue}`);
+    //     // } else {
+    //     //     rgbBrightnessChange = false;
+    //     // }
+    //     // sendData(e);
+    // });
 
 });
