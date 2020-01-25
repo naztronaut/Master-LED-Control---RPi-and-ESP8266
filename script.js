@@ -200,7 +200,7 @@ $(document).ready(function() {
     // Change your username and pass to your mqtt broker - example username and password filled in below
     let client = mqtt.connect({servers : [{ host: config.mqttHost, port: config.mqttPort}], username : "hassmqtt", password :"hassmqtt1!"});
     getInitStatus();
-    client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status', 'garage/temperature', 'garage/humidity']);
+    client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status', 'garage/temperature', 'garage/humidity', 'dining/status']);
     let rightLedStatus;
     let leftLedStatus;
     client.on("message", function (topic, payload) {
@@ -226,6 +226,8 @@ $(document).ready(function() {
             handleGarageTemperature(resp);
         } else if (topic == "garage/humidity") {
             handleGarageHumidity(resp);
+        } else if (topic == "dining/status") {
+            getDiningStatus(resp);
         }
         btnStatus();
     });
@@ -293,7 +295,10 @@ $(document).ready(function() {
         }
     }
 
-    // garage
+    /** Garage
+     *
+     * @param temperature
+     */
     function handleGarageTemperature(temperature) {
         console.log("temperature is: " + temperature + "\u00B0F");
         $("#temperature").text(temperature);
@@ -308,4 +313,74 @@ $(document).ready(function() {
         console.log('clicked');
        client.publish("garageDoor/trigger");
     });
+
+    /** Dining Room FEIT light
+     * Uses TUYA app
+     */
+
+    let diningBrightnessSlider = document.getElementById('diningBrightnessSlider');
+    let diningRoomLightStatus = "off";
+    let diningRoomLightBrightness = "255";
+
+    function getDiningStatus(e) {
+
+        diningBrightnessSlider.noUiSlider.set(Math.floor((e.brightness / 255) * 100));
+        console.log(e);
+        if (e.status == "off") {
+                $('#diningBtn').text('Dining On');
+                $('#diningBtn').removeClass().addClass('btn btn-block btn-dark');
+                diningRoomLightStatus = "off"
+            } else {
+                $('#diningBtn').text('Dining Off');
+                $('#diningBtn').removeClass().addClass('btn btn-block btn-light');
+                diningRoomLightStatus = "on";
+                diningRoomLightBrightness = e.brightness;
+            }
+    }
+
+    $("#diningBtn").off().on('click', function (e) {
+        console.log('clicked');
+        if(diningRoomLightStatus == "off") {
+            client.publish('dining/light/on',  diningRoomLightBrightness);
+        } else {
+            client.publish('dining/light/off');
+        }
+        client.publish("garageDoor/trigger");
+    });
+
+    noUiSlider.create(diningBrightnessSlider, {
+        behavior: "tap",
+        start: [100],
+        connect: [false, true],
+        step: 5,
+        range: {
+            'min': [10],
+            'max': [100]
+        },
+        pips: {
+            mode: 'values',
+            values: [10, 25, 50, 75, 100],
+            density: 5,
+            format: wNumb({
+                decimals: 0,
+                postfix: "%"
+            })
+        }
+    });
+
+//     "{
+//   \"status\": \"on\",
+//   \"brightness\": 255
+// }"
+    diningBrightnessSlider.noUiSlider.on('change', function(e) {
+       let sliderVal = (diningBrightnessSlider.noUiSlider.get()/100);
+       let calculated = (Math.floor(sliderVal * 255));
+       if(calculated > 0) {
+        client.publish("dining/light/on", calculated.toString())
+       } else {
+           client.publish("dining/light/off");
+       }
+
+    });
+
 });

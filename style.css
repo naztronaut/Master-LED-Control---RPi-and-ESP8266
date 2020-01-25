@@ -54,7 +54,7 @@ body {
     margin-bottom: 35px;
 }
 
-#kitchenleft, #kitchenright {
+#kitchenleft, #kitchenright, #diningBtn {
     font-size: 1.5rem;
     padding: 0.5em 0.7em !important;
     margin-bottom: 50px;
@@ -75,6 +75,14 @@ body {
 
 .secondRowSlider {
     padding: 50px 0 15px 0;
+}
+
+.diningSlider {
+    padding: 50px 10px 15px;
+}
+
+#diningBrightnessSlider .noUi-connect {
+    background: #666;
 }
 
 #subtitle {
@@ -132,7 +140,13 @@ body {
     box-shadow: 10px 15px 15px 0 rgba(0,0,0,0.33), 0 6px 8px 0 rgba(0,0,0,0.19);
 }
 
-@media (min-width: 451px) {
+#garageButton:active {
+    /*filter: invert(100%);*/
+    background-color: #666;
+    color: #fff;
+}
+
+@media (min-width: 471px) {
     .tabText {
         display: block;
     }
@@ -142,7 +156,7 @@ body {
     }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 470px) {
     .tabText {
         display: none;
     }

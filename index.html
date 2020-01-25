@@ -29,7 +29,12 @@
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="lr-tab" data-toggle="tab" href="#livingRoom" role="tab" aria-controls="livingRoom" aria-selected="true">
-                    <span class="tabIcon mdi mdi-sofa"></span><span class="tabText">LivingRoom</span>
+                    <span class="tabIcon mdi mdi-sofa"></span><span class="tabText">Living</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="dining-tab" data-toggle="tab" href="#dining" role="tab" aria-controls="dining" aria-selected="false">
+                    <span class="tabIcon mdi mdi-silverware"></span><span class="tabText">Dining</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -69,6 +74,16 @@
                             <div class="color-picker"></div>
                         </div>
                     </div>
+              </div>
+              <div class="tab-pane fade" id="dining" role="tabpanel" aria-labelledby="kitchen-tab">
+                    <div class="row diningSlider">
+                        <div class="col">
+                            <div id="diningBrightnessSlider"></div>
+                        </div>
+                    </div>
+                    <!--<div class="col">-->
+                        <!--<button type="button" class="btn btn-block btn-dark single" id="diningBtn">Dining On</button>-->
+                    <!--</div>-->
               </div>
               <div class="tab-pane fade" id="kitchen" role="tabpanel" aria-labelledby="kitchen-tab">
                   <div class="row">
