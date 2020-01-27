@@ -389,70 +389,70 @@ $(document).ready(function() {
             client.publish("dining/light/white", ($(e.target).data('kelvin')).toString());
         } else if($(e.target).data('color')){
             client.publish("dining/light/color", ($(e.target).data('color')).toString());
+        } else if($(e.target).data('turnOff')){
+            console.log('here');
+            client.publish("dining/light/off");
         }
     });
 
-    // const diningPickr = Pickr.create({
-    //     el: '.dining-color-picker',
-    //     theme: 'classic', // or 'monolith', or 'nano'
-    //     lockOpacity: true,
-    //     padding: 15,
-    //     inline: true,
-    //
-    //     swatches: [
-    //         'rgba(255, 0, 0, 1)',
-    //         'rgba(255, 82, 0, 1)',
-    //         'rgba(0, 255, 0, 1)',
-    //         'rgba(0, 0, 255, 1)',
-    //         'rgba(27, 161, 17, 1)',
-    //         'rgba(255, 255, 0, 1)', // yellow broken
-    //         'rgba(255, 0, 255, 1)',
-    //         'rgba(108, 16, 157, 1)',
-    //         'rgba(0, 255, 255, 1)',
-    //         'rgba(24, 139, 167, 1)',
-    //         'rgba(255, 255, 255, 1)',
-    //         'rgba(0, 0, 0, 1)',
-    //     ],
-    //
-    //     components: {
-    //
-    //         // Main components
-    //         preview: true,
-    //         opacity: false,
-    //         hue: true,
-    //
-    //         // Input / output Options
-    //         interaction: {
-    //             hex: true,
-    //             rgba: true,
-    //             // hsla: true,
-    //             // hsva: true,
-    //             // cmyk: true,
-    //             input: true,
-    //             // clear: true,
-    //             save: true
-    //         }
-    //     }
-    // });
-    //
-    // diningPickr.off().on('swatchselect', e => {
-    //     // sendData(e); // Swatchselect apparently triggers save so it triggers sendData() automatically
-    //     diningPickr.setColor(e.toRGBA().toString(0));
-    // });
-    //
-    // diningPickr.on('save', e => {
-    //     // If 'save' is being triggered by brightness changes instead
-    //     // if(rgbBrightnessChange == false) {
-    //     //     let tempColors = pickr.getColor().toRGBA();
-    //     //     currentColors.red = Math.floor(tempColors[0]);
-    //     //     currentColors.green = Math.floor(tempColors[1]);
-    //     //     currentColors.blue = Math.floor(tempColors[2]);
-    //     //     slider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
-    //     //     $('#slider .noUi-connect').css('background', `rgb(${currentColors.red}, ${currentColors.green}, ${currentColors.blue}`);
-    //     // } else {
-    //     //     rgbBrightnessChange = false;
-    //     // }
-    //     // sendData(e);
-    // });
+    const diningPickr = Pickr.create({
+        el: '.dining-color-picker',
+        theme: 'classic', // or 'monolith', or 'nano'
+        lockOpacity: true,
+        padding: 15,
+        inline: true,
+
+        swatches: [
+            'rgba(255, 0, 0, 1)',
+            'rgba(255, 82, 0, 1)',
+            'rgba(0, 255, 0, 1)',
+            'rgba(0, 0, 255, 1)',
+            'rgba(27, 161, 17, 1)',
+            'rgba(255, 255, 0, 1)', // yellow broken
+            'rgba(255, 0, 255, 1)',
+            'rgba(108, 16, 157, 1)',
+            'rgba(0, 255, 255, 1)',
+            'rgba(24, 139, 167, 1)',
+            'rgba(255, 255, 255, 1)'
+        ],
+
+        components: {
+
+            // Main components
+            preview: true,
+            opacity: false,
+            hue: true,
+
+            // Input / output Options
+            interaction: {
+                hex: true,
+                rgba: true,
+                // hsla: true,
+                // hsva: true,
+                // cmyk: true,
+                input: true,
+                // clear: true,
+                save: true
+            }
+        }
+    });
+
+    diningPickr.off().on('swatchselect', e => {
+        // sendData(e); // Swatchselect apparently triggers save so it triggers sendData() automatically
+        console.log(e.toRGBA().toString(0));
+        diningPickr.setColor(e.toRGBA().toString(0));
+    });
+
+    diningPickr.on('save', e => {
+        // If 'save' is being triggered by brightness changes instead
+            let tempColors = diningPickr.getColor().toRGBA();
+            let newColor = {};
+            newColor.red = Math.floor(tempColors[0]);
+            newColor.green = Math.floor(tempColors[1]);
+            newColor.blue = Math.floor(tempColors[2]);
+            slider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
+            $('#diningBrightnessSlider .noUi-connect').css('background', `rgb(${newColor.red}, ${newColor.green}, ${newColor.blue}`);
+            client.publish("dining/light/colorRGB", `{"status": "on", "brightness": 35,"red": ${newColor.red}, "green": ${newColor.green}, "blue": ${newColor.blue}}`);
+    });
 
 });

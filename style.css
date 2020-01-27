@@ -78,7 +78,10 @@ body {
 }
 
 .diningSlider {
-    padding: 50px 10px 15px;
+    padding: 15px 10px 15px;
+}
+.diningWhitePallet {
+    padding: 50px 10px 5px;
 }
 
 #diningBrightnessSlider .noUi-connect {
