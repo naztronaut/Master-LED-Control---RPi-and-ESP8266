@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Easy Programming - Master LED Control</title>
+        <title>Easy Programming - Master Controller</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="includes/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.7.95/css/materialdesignicons.min.css">
+        <link rel="stylesheet" href="includes/materialdesignicons.min.css">
         <link rel="stylesheet" href="includes/bootstrap.min.css">
         <script src="includes/bootstrap.min.js"></script>
         <link rel="stylesheet" href="includes/classic.min.css"/>
@@ -23,7 +23,7 @@
     <body>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark d-flex justify-content-between">
           <div class="p-2"><a class="navbar-brand" href="#">Easy Programming </a></div> 
-            <div class="p-2"><span id="subtitle">LED Control</span></div>
+            <div class="p-2"><span id="subtitle">Master Controller</span></div>
         </nav>
         <div class="container">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -58,6 +58,8 @@
                             </div>
                     </div>
                 </div>
+
+                <!--Living room tab content start-->
               <div class="tab-pane fade show active" id="livingRoom" role="tabpanel" aria-labelledby="lr-tab">
                   <div class="row">
                     <div class="col">
@@ -75,7 +77,10 @@
                         </div>
                     </div>
               </div>
-              <div class="tab-pane fade" id="dining" role="tabpanel" aria-labelledby="kitchen-tab">
+                <!--Living room tab content stop-->
+
+                <!--Dining room tab content start-->
+              <div class="tab-pane fade" id="dining" role="tabpanel" aria-labelledby="dining-tab">
                      <div class="row diningWhitePallet">
                         <div class="input-color">
                             <div class="color-box" style="background-color: rgb(255, 180, 107);" data-color="defaultWhite" data-kelvin="3000"></div>
@@ -92,27 +97,13 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <!--<div>Default Color Pallets:</div>-->
-
                             <div class="dining-color-picker"></div>
-
-                            <!--<div class="input-color">-->
-                                <!--<div class="color-box" style="background-color: rgb(255, 0, 0);" data-color="red" data-color="red"></div>-->
-                                <!--<div class="color-box" style="background-color: rgb(255, 82, 0);" data-color="orange" data-color="orange"></div>-->
-                                <!--<div class="color-box" style="background-color: rgb(0, 0, 255);" data-color="blue" data-color="blue"></div>-->
-                                <!--<div class="color-box" style="background-color: rgb(0, 255, 0);" data-color="green" data-color="green"></div>-->
-                                <!--<div class="color-box" style="background-color: rgb(255, 255, 0);" data-color="yellow" data-color="yellow"></div>-->
-                                <!--<div class="color-box" style="background-color: rgb(0, 255, 255);" data-color="cyan" data-color="cyan"></div>-->
-                                <!--<div class="color-box" style="background-color: rgb(255, 0, 255);" data-color="magenta" data-color="magenta"></div>-->
-                                <!--<div class="color-box" style="background-color: rgb(138, 43, 226);" data-color="violet" data-color="violet"></div>-->
-
-                            <!--</div>-->
                         </div>
                     </div>
-                    <!--<div class="col">-->
-                        <!--<button type="button" class="btn btn-block btn-dark single" id="diningBtn">Dining On</button>-->
-                    <!--</div>-->
               </div>
+                <!--dining room tab content stop-->
+
+                <!--Kitchen tab content start-->
               <div class="tab-pane fade" id="kitchen" role="tabpanel" aria-labelledby="kitchen-tab">
                   <div class="row">
                     <div class="col">
@@ -130,6 +121,9 @@
                     </div>
                 </div>
               </div>
+                <!--Kitchen tab content stop-->
+
+                <!--Garage tab content start-->
               <div class="tab-pane fade" id="garage" role="tabpanel" aria-labelledby="garage-tab">
                   <div class="row">
                       <div class="col-md" style="margin-bottom: 1em;">
@@ -144,12 +138,9 @@
                         <button type="button" class="btn btn-block" id="garageButton"><span class="mdi mdi-garage"></span> </button>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col">
-                        <!--<button type="button" class="btn btn-block btn-dark" id="garageButton">Turn On</button>-->
-                    </div>
-                </div>
               </div>
+                <!--Garage tab content stop-->
+
             </div>
         </div>
     </body>

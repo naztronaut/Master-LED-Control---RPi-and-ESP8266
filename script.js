@@ -139,7 +139,7 @@ $(document).ready(function() {
             url: `${config.url}/api/lr/white?white=${frequency}&${cacheBuster}`,
             method: 'GET',
             success: function(result) {
-                console.log(result);
+                // console.log(result);
             }
         });
     }
@@ -206,7 +206,7 @@ $(document).ready(function() {
     client.on("message", function (topic, payload) {
         let side;
         let resp = JSON.parse(payload.toString());
-        console.log(topic);
+        // console.log(topic);
         if(topic == "led/kitchenLeft/status" || topic == "led/kitchenRight/status") {
             if (resp.side == 'right') {
                 rightLedStatus = (resp.ledStatus == "off") ? 0 : 1;
@@ -300,17 +300,16 @@ $(document).ready(function() {
      * @param temperature
      */
     function handleGarageTemperature(temperature) {
-        console.log("temperature is: " + temperature + "\u00B0F");
+        // console.log("temperature is: " + temperature + "\u00B0F");
         $("#temperature").text(temperature);
     }
 
     function handleGarageHumidity(humidity) {
-        console.log("Humidity is: " + humidity + "%");
+        // console.log("Humidity is: " + humidity + "%");
         $("#humidity").text(humidity);
     }
 
     $("#garageButton").off().on('click', function (e) {
-        console.log('clicked');
        client.publish("garageDoor/trigger");
     });
 
@@ -325,7 +324,6 @@ $(document).ready(function() {
     function getDiningStatus(e) {
 
         diningBrightnessSlider.noUiSlider.set(Math.floor((e.brightness / 255) * 100));
-        console.log(e);
         if (e.status == "off") {
                 $('#diningBtn').text('Dining On');
                 $('#diningBtn').removeClass().addClass('btn btn-block btn-dark');
@@ -339,7 +337,6 @@ $(document).ready(function() {
     }
 
     $("#diningBtn").off().on('click', function (e) {
-        console.log('clicked');
         if(diningRoomLightStatus == "off") {
             client.publish('dining/light/on',  diningRoomLightBrightness);
         } else {
@@ -368,10 +365,6 @@ $(document).ready(function() {
         }
     });
 
-//     "{
-//   \"status\": \"on\",
-//   \"brightness\": 255
-// }"
     diningBrightnessSlider.noUiSlider.on('change', function(e) {
        let sliderVal = (diningBrightnessSlider.noUiSlider.get()/100);
        let calculated = (Math.floor(sliderVal * 255));
@@ -390,7 +383,6 @@ $(document).ready(function() {
         } else if($(e.target).data('color')){
             client.publish("dining/light/color", ($(e.target).data('color')).toString());
         } else if($(e.target).data('turnOff')){
-            console.log('here');
             client.publish("dining/light/off");
         }
     });
@@ -417,21 +409,15 @@ $(document).ready(function() {
         ],
 
         components: {
-
             // Main components
             preview: true,
             opacity: false,
             hue: true,
-
             // Input / output Options
             interaction: {
                 hex: true,
                 rgba: true,
-                // hsla: true,
-                // hsva: true,
-                // cmyk: true,
                 input: true,
-                // clear: true,
                 save: true
             }
         }
@@ -439,7 +425,7 @@ $(document).ready(function() {
 
     diningPickr.off().on('swatchselect', e => {
         // sendData(e); // Swatchselect apparently triggers save so it triggers sendData() automatically
-        console.log(e.toRGBA().toString(0));
+        // console.log(e.toRGBA().toString(0));
         diningPickr.setColor(e.toRGBA().toString(0));
     });
 
