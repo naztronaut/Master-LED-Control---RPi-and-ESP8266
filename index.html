@@ -43,6 +43,11 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" id="basement-tab" data-toggle="tab" href="#basement" role="tab" aria-controls="basement" aria-selected="false">
+                    <span class="tabIcon mdi mdi-stairs"></span><span class="tabText">Basement</span>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" id="garage-tab" data-toggle="tab" href="#garage" role="tab" aria-controls="garage" aria-selected="false">
                     <span class="tabIcon mdi mdi-car"></span><span class="tabText">Garage</span>
                 </a>
@@ -122,14 +127,14 @@
                         </div>
                     </div>
                 <div id="multi">
-                    <div class="row">
-                        <!--<div class="col">-->
-                            <!--<button type="button" class="btn btn-block btn-dark single" id="kitchenleft" data-side="Left">Left On</button>-->
-                        <!--</div>-->
-                        <!--<div class="col">-->
-                            <!--<button type="button" class="btn btn-block btn-dark single" id="kitchenright" data-side="Right">Right On</button>-->
-                        <!--</div>-->
-                    </div>
+                    <!--<div class="row">-->
+                        <!--&lt;!&ndash;<div class="col">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<button type="button" class="btn btn-block btn-dark single" id="kitchenleft" data-side="Left">Left On</button>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<button type="button" class="btn btn-block btn-dark single" id="kitchenright" data-side="Right">Right On</button>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
 
                     <div class="row">
                         <div class="col">
@@ -154,7 +159,29 @@
                 </div>
               </div>
                 <!--Kitchen tab content stop-->
-
+                <!--Basement tab content start-->
+              <div class="tab-pane fade" id="basement" role="tabpanel" aria-labelledby="basement-tab">
+                     <div class="row basementWhitePallet">
+                        <div class="input-color">
+                            <div class="color-box" style="background-color: rgb(255, 180, 107);" data-color="defaultWhite" data-kelvin="3000"></div>
+                            <div class="color-box" style="background-color: rgb(255, 219, 186);" data-color="coolWhite" data-kelvin="4500"></div>
+                            <div class="color-box" style="background-color: rgb(255, 243, 239);" data-color="daylightWhite" data-kelvin="6000"></div>
+                            <div class="color-box" style="background-color: rgb(0, 0, 0);" data-turn-off="black"></div>
+                        </div>
+                    </div>
+                    <div class="row basementSlider">
+                        <div class="col">
+                            <div>Brightness:</div>
+                            <div id="basementBrightnessSlider"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="basement-color-picker"></div>
+                        </div>
+                    </div>
+              </div>
+                <!--basement room tab content stop-->
                 <!--Garage tab content start-->
               <div class="tab-pane fade" id="garage" role="tabpanel" aria-labelledby="garage-tab">
                   <div class="row">
