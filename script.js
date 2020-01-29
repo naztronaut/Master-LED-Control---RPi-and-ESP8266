@@ -241,7 +241,8 @@ $(document).ready(function() {
         $("#multi").show();
     }
 
-    $('#btnToggle').off().on('click', function(e){
+    $('#btnToggle').off().on('change', function(e){
+        console.log(e);
         let state;
         if(globalStatus == 0) {
             state = 'on';
@@ -262,11 +263,13 @@ $(document).ready(function() {
     function btnStatus() {
 
         if(globalStatus == 0) {
-            $('#btnToggle').text('Turn On');
-            $('#btnToggle').removeClass().addClass('btn btn-block btn-dark');
+            $('#btnToggle').prop("checked", false);
+            // $('#btnToggle').text('Turn On');
+            // $('#btnToggle').removeClass().addClass('btn btn-block btn-dark');
         } else {
-            $('#btnToggle').text('Turn Off')
-            $('#btnToggle').removeClass().addClass('btn btn-block btn-light');
+            $('#btnToggle').prop("checked", true);
+            // $('#btnToggle').text('Turn Off')
+            // $('#btnToggle').removeClass().addClass('btn btn-block btn-light');
         }
     }
 
@@ -286,11 +289,13 @@ $(document).ready(function() {
 
         function singleButton(side, state) {
             if (state == 0) {
-                $('#kitchen' + side).text(side + ' On');
-                $('#kitchen' + side).removeClass().addClass('btn btn-block btn-dark');
+                $('#kitchen' + side).prop("checked", false);
+                // $('#kitchen' + side).text(side + ' On');
+                // $('#kitchen' + side).removeClass().addClass('btn btn-block btn-dark');
             } else {
-                $('#kitchen' + side).text(side + ' Off');
-                $('#kitchen' + side).removeClass().addClass('btn btn-block btn-light');
+                $('#kitchen' + side).prop("checked", true);
+                // $('#kitchen' + side).text(side + ' Off');
+                // $('#kitchen' + side).removeClass().addClass('btn btn-block btn-light');
             }
         }
     }

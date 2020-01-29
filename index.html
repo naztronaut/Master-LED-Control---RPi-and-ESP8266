@@ -105,18 +105,50 @@
 
                 <!--Kitchen tab content start-->
               <div class="tab-pane fade" id="kitchen" role="tabpanel" aria-labelledby="kitchen-tab">
+                  <!--<div class="row">-->
+                    <!--<div class="col">-->
+                        <!--<button type="button" class="btn btn-block btn-dark" id="btnToggle">Turn On</button>-->
+                    <!--</div>-->
+                <!--</div>-->
                   <div class="row">
-                    <div class="col">
-                        <button type="button" class="btn btn-block btn-dark" id="btnToggle">Turn On</button>
+                        <div class="col">
+                            <div class="onoffswitch onoffswitch-kitchen-large">
+                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="btnToggle" checked>
+                                <label class="onoffswitch-label" for="btnToggle">
+                                    <span class="onoffswitch-inner onoffswitch-inner-kitchen-large"></span>
+                                    <span class="onoffswitch-switch onoffswitch-switch-kitchen-large"></span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                </div>
                 <div id="multi">
                     <div class="row">
+                        <!--<div class="col">-->
+                            <!--<button type="button" class="btn btn-block btn-dark single" id="kitchenleft" data-side="Left">Left On</button>-->
+                        <!--</div>-->
+                        <!--<div class="col">-->
+                            <!--<button type="button" class="btn btn-block btn-dark single" id="kitchenright" data-side="Right">Right On</button>-->
+                        <!--</div>-->
+                    </div>
+
+                    <div class="row">
                         <div class="col">
-                            <button type="button" class="btn btn-block btn-dark single" id="kitchenleft" data-side="Left">Left On</button>
+                            <div class="onoffswitch onoffswitch-kitchen-small">
+                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox single" id="kitchenleft" data-side="Left">
+                                <label class="onoffswitch-label" for="kitchenleft">
+                                    <span class="onoffswitch-inner onoffswitch-inner-kitchen-small left"></span>
+                                    <span class="onoffswitch-switch onoffswitch-switch-kitchen-small"></span>
+                                </label>
+                            </div>
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-block btn-dark single" id="kitchenright" data-side="Right">Right On</button>
+                            <div class="onoffswitch onoffswitch-kitchen-small">
+                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox single" id="kitchenright" data-side="Right">
+                                <label class="onoffswitch-label" for="kitchenright">
+                                    <span class="onoffswitch-inner onoffswitch-inner-kitchen-small right"></span>
+                                    <span class="onoffswitch-switch onoffswitch-switch-kitchen-small"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
