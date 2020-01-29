@@ -200,7 +200,7 @@ $(document).ready(function() {
     // Change your username and pass to your mqtt broker - example username and password filled in below
     let client = mqtt.connect({servers : [{ host: config.mqttHost, port: config.mqttPort}], username : "hassmqtt", password :"hassmqtt1!"});
     getInitStatus();
-    client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status', 'garage/temperature', 'garage/humidity', 'dining/status']);
+    client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status', 'garage/temperature', 'garage/humidity', 'dining/status', 'basement/status']);
     let rightLedStatus;
     let leftLedStatus;
     client.on("message", function (topic, payload) {
@@ -228,6 +228,8 @@ $(document).ready(function() {
             handleGarageHumidity(resp);
         } else if (topic == "dining/status") {
             getDiningStatus(resp);
+        } else if (topic == "basement/status") {
+            getBasementStatus(resp);
         }
         btnStatus();
     });
@@ -441,9 +443,123 @@ $(document).ready(function() {
             newColor.red = Math.floor(tempColors[0]);
             newColor.green = Math.floor(tempColors[1]);
             newColor.blue = Math.floor(tempColors[2]);
-            slider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
+            diningBrightnessSlider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
             $('#diningBrightnessSlider .noUi-connect').css('background', `rgb(${newColor.red}, ${newColor.green}, ${newColor.blue}`);
             client.publish("dining/light/colorRGB", `{"status": "on", "brightness": 35,"red": ${newColor.red}, "green": ${newColor.green}, "blue": ${newColor.blue}}`);
+    });
+
+
+    /** Basement FEIT light
+     * Uses TUYA app
+     */
+
+    let basementBrightnessSlider = document.getElementById('basementBrightnessSlider');
+    let basementRoomLightStatus = "off";
+    let basementRoomLightBrightness = "255";
+
+    function getBasementStatus(e) {
+
+        basementBrightnessSlider.noUiSlider.set(Math.floor((e.brightness / 255) * 100));
+        if (e.status == "off") {
+                basementRoomLightStatus = "off"
+            } else {
+                basementRoomLightStatus = "on";
+                basementRoomLightBrightness = e.brightness;
+            }
+    }
+
+    noUiSlider.create(basementBrightnessSlider, {
+        behavior: "tap",
+        start: [100],
+        connect: [false, true],
+        step: 5,
+        range: {
+            'min': [10],
+            'max': [100]
+        },
+        pips: {
+            mode: 'values',
+            values: [10, 25, 50, 75, 100],
+            density: 5,
+            format: wNumb({
+                decimals: 0,
+                postfix: "%"
+            })
+        }
+    });
+
+    basementBrightnessSlider.noUiSlider.on('change', function(e) {
+       let sliderVal = (basementBrightnessSlider.noUiSlider.get()/100);
+       let calculated = (Math.floor(sliderVal * 255));
+       // below 25 brightness (out of 255) is 'off' for this stupid light
+       if(calculated > 25) {
+        client.publish("basement/light/on", calculated.toString());
+       } else {
+           client.publish("basement/light/off");
+       }
+
+    });
+
+    $('.basement-color-box').off().on('click', function (e) {
+        if($(e.target).data('kelvin')) {
+            client.publish("basement/light/white", ($(e.target).data('kelvin')).toString());
+        } else if($(e.target).data('color')){
+            client.publish("basement/light/color", ($(e.target).data('color')).toString());
+        } else if($(e.target).data('turnOff')){
+            client.publish("basement/light/off");
+        }
+    });
+
+    const basementPickr = Pickr.create({
+        el: '.basement-color-picker',
+        theme: 'classic', // or 'monolith', or 'nano'
+        lockOpacity: true,
+        padding: 15,
+        inline: true,
+
+        swatches: [
+            'rgba(255, 0, 0, 1)',
+            'rgba(255, 82, 0, 1)',
+            'rgba(0, 255, 0, 1)',
+            'rgba(0, 0, 255, 1)',
+            'rgba(27, 161, 17, 1)',
+            'rgba(255, 255, 0, 1)', // yellow broken
+            'rgba(255, 0, 255, 1)',
+            'rgba(108, 16, 157, 1)',
+            'rgba(0, 255, 255, 1)',
+            'rgba(24, 139, 167, 1)',
+            'rgba(255, 255, 255, 1)'
+        ],
+
+        components: {
+            // Main components
+            preview: true,
+            opacity: false,
+            hue: true,
+            // Input / output Options
+            interaction: {
+                hex: true,
+                rgba: true,
+                input: true,
+                save: true
+            }
+        }
+    });
+
+    basementPickr.off().on('swatchselect', e => {
+        basementPickr.setColor(e.toRGBA().toString(0));
+    });
+
+    basementPickr.on('save', e => {
+        // If 'save' is being triggered by brightness changes instead
+            let tempColors = basementPickr.getColor().toRGBA();
+            let newColor = {};
+            newColor.red = Math.floor(tempColors[0]);
+            newColor.green = Math.floor(tempColors[1]);
+            newColor.blue = Math.floor(tempColors[2]);
+            basementBrightnessSlider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
+            $('#basementBrightnessSlider .noUi-connect').css('background', `rgb(${newColor.red}, ${newColor.green}, ${newColor.blue}`);
+            client.publish("basement/light/colorRGB", `{"status": "on", "brightness": 35,"red": ${newColor.red}, "green": ${newColor.green}, "blue": ${newColor.blue}}`);
     });
 
 });

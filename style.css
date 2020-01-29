@@ -7,7 +7,7 @@ body {
     margin-top: 1em;
 }
 .nav-link {
-    padding: 0.5rem 1.5rem !important;;
+    padding: 0.5rem 1rem !important;;
 }
 
 
@@ -150,7 +150,7 @@ body {
     color: #fff;
 }
 
-@media (min-width: 471px) {
+@media (min-width: 518px) {
     .tabText {
         display: block;
     }
@@ -160,7 +160,7 @@ body {
     }
 }
 
-@media (max-width: 470px) {
+@media (max-width: 517px) {
     .tabText {
         display: none;
     }
@@ -176,7 +176,7 @@ body {
 /*.input-color input {*/
     /*padding-left: 20px;*/
 /*}*/
-.input-color .color-box {
+.input-color .color-box, .input-color .basement-color-box {
     width: 4em;
     height: 4em;
     display: inline-block;
