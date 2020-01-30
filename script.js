@@ -1,3 +1,5 @@
+import * as conf from './config.js';
+
 let config = {
     url: 'http://192.168.1.225',
     multi: true,
@@ -198,7 +200,7 @@ $(document).ready(function() {
      */
 
     // Change your username and pass to your mqtt broker - example username and password filled in below
-    let client = mqtt.connect({servers : [{ host: config.mqttHost, port: config.mqttPort}], username : "hassmqtt", password :"hassmqtt1!"});
+    let client = mqtt.connect({servers : [{ host: config.mqttHost, port: config.mqttPort}], username : conf.creds.mqttUser, password : conf.creds.mqttPass});
     getInitStatus();
     client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status', 'garage/temperature', 'garage/humidity', 'dining/status', 'basement/status']);
     let rightLedStatus;
@@ -289,7 +291,9 @@ $(document).ready(function() {
             e.preventDefault();
         });
 
-        function singleButton(side, state) {
+
+    }
+    function singleButton(side, state) {
             if (state == 0) {
                 $('#kitchen' + side).prop("checked", false);
                 // $('#kitchen' + side).text(side + ' On');
@@ -299,9 +303,7 @@ $(document).ready(function() {
                 // $('#kitchen' + side).text(side + ' Off');
                 // $('#kitchen' + side).removeClass().addClass('btn btn-block btn-light');
             }
-        }
     }
-
     /** Garage
      *
      * @param temperature

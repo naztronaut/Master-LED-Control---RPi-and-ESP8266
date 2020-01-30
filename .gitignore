@@ -6,3 +6,4 @@ PIGPIO
 __pycache__/
 venv/
 venv/*
+config.js
