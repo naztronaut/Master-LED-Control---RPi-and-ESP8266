@@ -12,6 +12,12 @@ let currentColors = {};
 let rgbBrightnessChange = false;
 $(document).ready(function() {
 
+    // Jump straight to a tab whe you load the page - e.g. http://{url}/#garage
+    if(window.location.hash) {
+        let hash = window.location.hash;
+        $(`${hash}-tab`).tab('show');
+    }
+
     // Cache buster added because caching was a big problem on mobile
     let cacheBuster = new Date().getTime();
 
