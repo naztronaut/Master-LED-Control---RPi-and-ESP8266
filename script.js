@@ -208,7 +208,7 @@ $(document).ready(function() {
     // Change your username and pass to your mqtt broker - example username and password filled in below
     let client = mqtt.connect({servers : [{ host: config.mqttHost, port: config.mqttPort}], username : conf.creds.mqttUser, password : conf.creds.mqttPass});
     getInitStatus();
-    client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status', 'garage/temperature', 'garage/humidity', 'dining/status', 'basement/status']);
+    client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status', 'garage/temperature', 'garage/humidity', 'dining/status', 'basement/status', 'tvDinnerScenario/status']);
     let rightLedStatus;
     let leftLedStatus;
     client.on("message", function (topic, payload) {
@@ -238,6 +238,9 @@ $(document).ready(function() {
             getDiningStatus(resp);
         } else if (topic == "basement/status") {
             getBasementStatus(resp);
+        } else if (topic == "tvDinnerScenario/status") {
+            getLEDStatus('rgb');
+            getLEDStatus('white');
         }
         btnStatus();
     });
