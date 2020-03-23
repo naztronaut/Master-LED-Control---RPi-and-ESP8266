@@ -52,6 +52,11 @@
                     <span class="tabIcon mdi mdi-car"></span><span class="tabText">Garage</span>
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" id="scenes-tab" data-toggle="tab" href="#scenes" role="tab" aria-controls="scenes" aria-selected="false">
+                    <span class="tabIcon mdi mdi-movie-open"></span><span class="tabText">Scenes</span>
+                </a>
+              </li>
             </ul>
             <div class="tab-content" id="roomTabContent">
                 <div class="spinner-parent bg-white">
@@ -66,6 +71,20 @@
 
                 <!--Living room tab content start-->
               <div class="tab-pane fade show active" id="livingRoom" role="tabpanel" aria-labelledby="lr-tab">
+                  <div class="row text-center">
+                        <div class="col">
+                            <button type="button" class="btn scenariosButtons" id="tvScenario"><span class="mdi mdi-television-classic"></span></button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn scenariosButtons" id="dinnerScenario"><span class="mdi mdi-silverware"></span></button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn scenariosButtons" id="sleepScenario"><span class="mdi mdi-sleep"></span></button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn scenariosButtons" id="partyScenario"><span class="mdi mdi-party-popper"></span></button>
+                        </div>
+                    </div>
                   <div class="row">
                     <div class="col">
                         <div id="wSlider"></div>
@@ -81,6 +100,7 @@
                             <div class="color-picker"></div>
                         </div>
                     </div>
+
               </div>
                 <!--Living room tab content stop-->
 
@@ -196,6 +216,13 @@
                       <div class="col-md">
                         <button type="button" class="btn btn-block" id="garageButton"><span class="mdi mdi-garage"></span> </button>
                     </div>
+                  </div>
+              </div>
+              <div class="tab-pane fade" id="scenes" role="tabpanel" aria-labelledby="garage-tab">
+                  <div class="row">
+                      <div class="col-md" style="margin-bottom: 1em;">
+
+                      </div>
                   </div>
               </div>
                 <!--Garage tab content stop-->

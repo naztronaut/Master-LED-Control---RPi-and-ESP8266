@@ -2,6 +2,7 @@ import * as conf from './config.js';
 
 let config = {
     url: 'http://192.168.1.225',
+    bedroomUrl: 'http://192.168.1.193',
     multi: true,
     mqttHost: "192.168.1.244",
     mqttPort: 1884
