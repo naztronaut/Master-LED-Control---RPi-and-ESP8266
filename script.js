@@ -10,7 +10,9 @@ let config = {
 
 let globalStatus = 0;
 let currentColors = {};
+let currentBedroomColors = {};
 let rgbBrightnessChange = false;
+let bedroomRgbBrightnessChange = false;
 $(document).ready(function() {
 
     // Jump straight to a tab whe you load the page - e.g. http://{url}/#garage
@@ -197,6 +199,189 @@ $(document).ready(function() {
             complete: () => {
                 $('.spinner-parent').hide();
             },
+        });
+    }
+
+    /**
+     * Bedroom Start
+     */
+
+    // Get RGB Status so Color Picker in UI is set to that color on page load
+    getBedroomLEDStatus('rgb');
+    getBedroomLEDStatus('white');
+    // RGB Slider
+    let bedroomSlider = document.getElementById('bedroomSlider');
+    // White Slider
+    let bedroomWhiteSlider = document.getElementById('bedroomWhiteSlider');
+
+    const bedroomPickr = Pickr.create({
+        el: '.bedroom-color-picker',
+        theme: 'classic', // or 'monolith', or 'nano'
+        lockOpacity: true,
+        padding: 15,
+        inline: true,
+
+        swatches: [
+            'rgba(255, 0, 0, 1)',
+            'rgba(255, 82, 0, 1)',
+            'rgba(0, 255, 0, 1)',
+            'rgba(0, 0, 255, 1)',
+            'rgba(27, 161, 17, 1)',
+            'rgba(255, 255, 0, 1)',
+            'rgba(255, 0, 255, 1)',
+            'rgba(108, 16, 157, 1)',
+            'rgba(0, 255, 255, 1)',
+            'rgba(24, 139, 167, 1)',
+            'rgba(255, 255, 255, 1)',
+            'rgba(0, 0, 0, 1)',
+        ],
+
+        components: {
+
+            // Main components
+            preview: true,
+            opacity: false,
+            hue: true,
+
+            // Input / output Options
+            interaction: {
+                hex: true,
+                rgba: true,
+                input: true,
+                save: true
+            }
+        }
+    });
+
+    bedroomPickr.off().on('swatchselect', e => {
+        // sendData(e); // Swatchselect apparently triggers save so it triggers sendData() automatically
+        bedroomPickr.setColor(e.toRGBA().toString(0));
+    });
+
+    bedroomPickr.on('save', e => {
+        // If 'save' is being triggered by brightness changes instead
+        if(rgbBrightnessChange == false) {
+            let tempColors = bedroomPickr.getColor().toRGBA();
+            currentBedroomColors.red = Math.floor(tempColors[0]);
+            currentBedroomColors.green = Math.floor(tempColors[1]);
+            currentBedroomColors.blue = Math.floor(tempColors[2]);
+            //bedroomSlider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
+            $('#bedroomSlider .noUi-connect').css('background', `rgb(${currentBedroomColors.red}, ${currentBedroomColors.green}, ${currentBedroomColors.blue}`);
+        } else {
+            bedroomRgbBrightnessChange = false;
+        }
+        sendBedroomData(e);
+    });
+
+    noUiSlider.create(bedroomSlider, {
+        behavior: "tap",
+        start: [100],
+        connect: [true, false],
+        // direction: 'rtl',
+        step: 5,
+        range: {
+            'min': [0],
+            'max': [100]
+        },
+        pips: {
+            mode: 'values',
+            values: [0, 25, 50, 75, 100],
+            density: 5,
+            format: wNumb({
+                decimals: 0,
+                postfix: "%"
+            })
+        }
+    });
+
+    // bedroomSlider.noUiSlider.on('set', function(e) {
+    //    let sliderVal = (bedroomSlider.noUiSlider.get()/100);
+    //    let newRed = Math.floor(currentBedroomColors.red * sliderVal);
+    //    let newGreen = Math.floor(currentBedroomColors.green * sliderVal);
+    //    let newBlue = Math.floor(currentBedroomColors.blue * sliderVal);
+    //    console.log(newRed);
+    //    bedroomRgbBrightnessChange = true;
+    //    bedroomPickr.setColor(`rgb(${newRed}, ${newGreen}, ${newBlue})`);
+    // });
+
+    bedroomSlider.noUiSlider.on('set', function(e) {
+       let sliderVal = (bedroomSlider.noUiSlider.get()/100);
+       let newRed = Math.floor(currentBedroomColors.red * sliderVal);
+       let newGreen = Math.floor(currentBedroomColors.green * sliderVal);
+       let newBlue = Math.floor(currentBedroomColors.blue * sliderVal);
+       bedroomRgbBrightnessChange = true;
+       bedroomPickr.setColor(`rgb(${newRed}, ${newGreen}, ${newBlue})`);
+    });
+
+    function sendBedroomData(e){
+        let obj = e.toRGBA();
+        let red = Math.floor(obj[0]);
+        let green = Math.floor(obj[1]);
+        let blue = Math.floor(obj[2]);
+        let queryBuilder = `red=${red}&green=${green}&blue=${blue}`;
+
+        $.ajax({
+            url: `${config.bedroomUrl}/api/lr/?${queryBuilder}&${cacheBuster}`,
+            method: 'GET',
+            dataType: 'json',
+            cache: false,
+            success: function (result) {
+                // console.log(result);
+                // console.log(currentColors);
+            }
+        });
+    }
+
+    function changeBedroomWhiteLed(frequency){
+        $.ajax({
+            url: `${config.bedroomUrl}/api/lr/white?white=${frequency}&${cacheBuster}`,
+            method: 'GET',
+            success: function(result) {
+                // console.log(result);
+            }
+        });
+    }
+
+    noUiSlider.create(bedroomWhiteSlider, {
+        behavior: "tap",
+        start: [100],
+        connect: [false, true],
+        step: 5,
+        range: {
+            'min': [0],
+            'max': [100]
+        },
+        pips: {
+            mode: 'values',
+            values: [0, 25, 50, 75, 100],
+            density: 5,
+            format: wNumb({
+                decimals: 0,
+                postfix: "%"
+            })
+        }
+    });
+
+    bedroomWhiteSlider.noUiSlider.on('change', function(e) {
+       let sliderVal = (bedroomWhiteSlider.noUiSlider.get()/100);
+       changeBedroomWhiteLed(Math.floor(sliderVal * 255));
+    });
+
+    function getBedroomLEDStatus(color) {
+        $.ajax({
+            url: `${config.bedroomUrl}/api/lr/getStatus?colors=${color}&${cacheBuster}`,
+            method: 'GET',
+            success: function(result) {
+                if(color == 'rgb') {
+                    let colors = `rgb(${result.red}, ${result.green}, ${result.blue})`;
+                    currentBedroomColors.red = result.red;
+                    currentBedroomColors.green = result.green;
+                    currentBedroomColors.blue = result.blue;
+                    bedroomPickr.setColor(colors);
+                } else {
+                    bedroomWhiteSlider.noUiSlider.set(Math.floor((result.white / 255) * 100));
+                }
+            }
         });
     }
 
