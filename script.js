@@ -260,12 +260,12 @@ $(document).ready(function() {
 
     bedroomPickr.on('save', e => {
         // If 'save' is being triggered by brightness changes instead
-        if(rgbBrightnessChange == false) {
+        if(bedroomRgbBrightnessChange == false) {
             let tempColors = bedroomPickr.getColor().toRGBA();
             currentBedroomColors.red = Math.floor(tempColors[0]);
             currentBedroomColors.green = Math.floor(tempColors[1]);
             currentBedroomColors.blue = Math.floor(tempColors[2]);
-            //bedroomSlider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
+            bedroomSlider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
             $('#bedroomSlider .noUi-connect').css('background', `rgb(${currentBedroomColors.red}, ${currentBedroomColors.green}, ${currentBedroomColors.blue}`);
         } else {
             bedroomRgbBrightnessChange = false;
@@ -309,6 +309,7 @@ $(document).ready(function() {
        let newRed = Math.floor(currentBedroomColors.red * sliderVal);
        let newGreen = Math.floor(currentBedroomColors.green * sliderVal);
        let newBlue = Math.floor(currentBedroomColors.blue * sliderVal);
+       console.log(currentBedroomColors);
        bedroomRgbBrightnessChange = true;
        bedroomPickr.setColor(`rgb(${newRed}, ${newGreen}, ${newBlue})`);
     });
