@@ -13,6 +13,7 @@ let currentColors = {};
 let currentBedroomColors = {};
 let rgbBrightnessChange = false;
 let bedroomRgbBrightnessChange = false;
+let bedroomLightBtnStatus = 0;
 $(document).ready(function() {
 
     // Jump straight to a tab whe you load the page - e.g. http://{url}/#garage
@@ -209,6 +210,40 @@ $(document).ready(function() {
     // Get RGB Status so Color Picker in UI is set to that color on page load
     getBedroomLEDStatus('rgb');
     getBedroomLEDStatus('white');
+
+    // big button in bedroom to turn on all lights to max
+    $("#bedroomBtn").off().on('change', function() {
+        let state;
+        if(bedroomLightBtnStatus == 0) {
+            changeBedroomWhiteLed(255);
+            $.ajax({
+                url: `${config.bedroomUrl}/api/lr/?red=255&green=255&blue=255&${cacheBuster}`,
+                method: 'GET',
+                dataType: 'json',
+                cache: false,
+                success: function (result) {
+                    bedroomWhiteSlider.noUiSlider.set(100);
+                    bedroomSlider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
+                    $('#bedroomSlider .noUi-connect').css('background', `rgb(255,255,255)`);
+                }
+            });
+            bedroomLightBtnStatus = 1;
+        } else {
+            changeBedroomWhiteLed(0);
+            $.ajax({
+                url: `${config.bedroomUrl}/api/lr/?red=0&green=0&blue=0&${cacheBuster}`,
+                method: 'GET',
+                dataType: 'json',
+                cache: false,
+                success: function (result) {
+                    bedroomWhiteSlider.noUiSlider.set(0);
+                    bedroomSlider.noUiSlider.set(0); // sets slider value to 0 if color is changed manually
+                    $('#bedroomSlider .noUi-connect').css('background', `rgb(0,0,0)`);
+                }
+            });
+            bedroomLightBtnStatus = 0;
+        }
+    });
     // RGB Slider
     let bedroomSlider = document.getElementById('bedroomSlider');
     // White Slider
@@ -309,13 +344,14 @@ $(document).ready(function() {
        let newRed = Math.floor(currentBedroomColors.red * sliderVal);
        let newGreen = Math.floor(currentBedroomColors.green * sliderVal);
        let newBlue = Math.floor(currentBedroomColors.blue * sliderVal);
-       console.log(currentBedroomColors);
        bedroomRgbBrightnessChange = true;
        bedroomPickr.setColor(`rgb(${newRed}, ${newGreen}, ${newBlue})`);
     });
 
     function sendBedroomData(e){
+        console.log(e);
         let obj = e.toRGBA();
+        console.log(obj);
         let red = Math.floor(obj[0]);
         let green = Math.floor(obj[1]);
         let blue = Math.floor(obj[2]);
@@ -366,6 +402,13 @@ $(document).ready(function() {
     bedroomWhiteSlider.noUiSlider.on('change', function(e) {
        let sliderVal = (bedroomWhiteSlider.noUiSlider.get()/100);
        changeBedroomWhiteLed(Math.floor(sliderVal * 255));
+       if(Math.floor(sliderVal * 255) > 0) {
+          bedroomLightBtnStatus = 1;
+          $("#bedroomBtn").prop("checked", true);
+        } else {
+            bedroomLightBtnStatus = 0;
+            $("#bedroomBtn").prop("checked", false);
+        }
     });
 
     function getBedroomLEDStatus(color) {
@@ -381,6 +424,15 @@ $(document).ready(function() {
                     bedroomPickr.setColor(colors);
                 } else {
                     bedroomWhiteSlider.noUiSlider.set(Math.floor((result.white / 255) * 100));
+                    console.log(Math.floor(result.white));
+                    if(Math.floor(result.white) > 0) {
+
+                      bedroomLightBtnStatus = 1;
+                      $("#bedroomBtn").prop("checked", true);
+                    } else {
+                        bedroomLightBtnStatus = 0;
+                        $("#bedroomBtn").prop("checked", false);
+                    }
                 }
             }
         });
