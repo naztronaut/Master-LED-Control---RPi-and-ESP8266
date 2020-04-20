@@ -129,7 +129,7 @@ body {
     margin: 0 7px;
 }
 
-#wSlider .noUi-connect {
+#wSlider .noUi-connect, #bedroomWhiteSlider .noUi-connect {
     background: #666;
 }
 

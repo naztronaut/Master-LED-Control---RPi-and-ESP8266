@@ -26,9 +26,7 @@ $(document).ready(function() {
     // Cache buster added because caching was a big problem on mobile
     let cacheBuster = new Date().getTime();
 
-    // btnStatus();
-    getLEDStatus('rgb');
-    getLEDStatus('white');
+
 
     // RGB Slider
     let slider = document.getElementById('slider');
@@ -81,11 +79,9 @@ $(document).ready(function() {
     pickr.off().on('swatchselect', e => {
         // sendData(e); // Swatchselect apparently triggers save so it triggers sendData() automatically
         pickr.setColor(e.toRGBA().toString(0));
-        console.log(e.toRGBA().toString(0));
     });
 
     pickr.on('save', e => {
-        console.log('changed');
         // If 'save' is being triggered by brightness changes instead
         if(rgbBrightnessChange == false) {
             let tempColors = pickr.getColor().toRGBA();
@@ -97,7 +93,6 @@ $(document).ready(function() {
         } else {
             rgbBrightnessChange = false;
         }
-        console.log(e);
         sendData(e);
     });
 
@@ -197,10 +192,6 @@ $(document).ready(function() {
                     currentColors.green = result.green;
                     currentColors.blue = result.blue;
                     pickr.setColor(colors);
-                    // pickr.setColor('rgb(255,255,255)');
-                    console.log(pickr.getColor());
-
-                    // pickr.setColor(pickr.getColor().toRGBA().toString(0));
                 } else {
                     wSlider.noUiSlider.set(Math.floor((result.white / 255) * 100));
                 }
@@ -215,9 +206,7 @@ $(document).ready(function() {
      * Bedroom Start
      */
 
-    // Get RGB Status so Color Picker in UI is set to that color on page load
-    getBedroomLEDStatus('rgb');
-    getBedroomLEDStatus('white');
+
 
     // big button in bedroom to turn on all lights to max
     $("#bedroomBtn").off().on('change', function() {
@@ -427,12 +416,10 @@ $(document).ready(function() {
                     currentBedroomColors.red = result.red;
                     currentBedroomColors.green = result.green;
                     currentBedroomColors.blue = result.blue;
-                    console.log(colors);
                     bedroomPickr.setColor(colors);
                 } else {
                     bedroomWhiteSlider.noUiSlider.set(Math.floor((result.white / 255) * 100));
                     if(Math.floor(result.white) > 0) {
-
                       bedroomLightBtnStatus = 1;
                       $("#bedroomBtn").prop("checked", true);
                     } else {
@@ -859,4 +846,13 @@ $(document).ready(function() {
     });
 
     // Home tab code end
+
+
+    // Get Statuses of all buttons
+    getLEDStatus('rgb');
+    getLEDStatus('white');
+
+    // Get RGB Status so Color Picker in UI is set to that color on page load
+    getBedroomLEDStatus('rgb');
+    getBedroomLEDStatus('white');
 });
