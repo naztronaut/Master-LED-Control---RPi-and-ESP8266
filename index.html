@@ -26,9 +26,14 @@
             <div class="p-2"><span id="subtitle">Master Controller</span></div>
         </nav>
         <div class="container">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <ul class="nav nav-tabs active" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="lr-tab" data-toggle="tab" href="#livingRoom" role="tab" aria-controls="livingRoom" aria-selected="true">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                    <span class="tabIcon mdi mdi-home"></span><span class="tabText">Home</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="lr-tab" data-toggle="tab" href="#livingRoom" role="tab" aria-controls="livingRoom" aria-selected="true">
                     <span class="tabIcon mdi mdi-sofa"></span><span class="tabText">Living</span>
                 </a>
               </li>
@@ -73,25 +78,39 @@
                             </div>
                     </div>
                 </div>
+              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                  <div class="row text-center">
+                      <div class="card" style="width: 100%  ">
+                          <ul class="list-group list-group-flush">
+                              <li class="list-group-item d-flex justify-content-between"><span class="p-0"><span class="mdi mdi-webcam"></span> In a Meeting?:</span> <span class="tempHumidityAlign p-0"><span id="inAMeeting"></span></span></li>
+                          </ul>
+                       </div>
+                  </div>
+                     <!--MODES START-->
+                  <div class="row text-center">
+                        <div class="col">
+                            <button type="button" class="btn scenariosButtons" id="tvMode"><span class="mdi mdi-television-classic"></span></button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn scenariosButtons" id="dinnerMode"><span class="mdi mdi-silverware"></span></button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn scenariosButtons" id="bedMode"><span class="mdi mdi-bed-king-outline"></span></button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn scenariosButtons" id="sleepMode"><span class="mdi mdi-sleep"></span></button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn scenariosButtons" id="partyMode"><span class="mdi mdi-party-popper"></span></button>
+                        </div>
+
+                    </div>
+                    <!--MODES END-->
+              </div>
 
                 <!--Living room tab content start-->
-              <div class="tab-pane fade show active" id="livingRoom" role="tabpanel" aria-labelledby="lr-tab">
-                  <!--MODES START-->
-                  <!--<div class="row text-center">-->
-                        <!--<div class="col">-->
-                            <!--<button type="button" class="btn scenariosButtons" id="tvScenario"><span class="mdi mdi-television-classic"></span></button>-->
-                        <!--</div>-->
-                        <!--<div class="col">-->
-                            <!--<button type="button" class="btn scenariosButtons" id="dinnerScenario"><span class="mdi mdi-silverware"></span></button>-->
-                        <!--</div>-->
-                        <!--<div class="col">-->
-                            <!--<button type="button" class="btn scenariosButtons" id="sleepScenario"><span class="mdi mdi-sleep"></span></button>-->
-                        <!--</div>-->
-                        <!--<div class="col">-->
-                            <!--<button type="button" class="btn scenariosButtons" id="partyScenario"><span class="mdi mdi-party-popper"></span></button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--MODES END-->
+              <div class="tab-pane fade" id="livingRoom" role="tabpanel" aria-labelledby="lr-tab">
+
                   <div class="row">
                     <div class="col">
                         <div id="wSlider"></div>

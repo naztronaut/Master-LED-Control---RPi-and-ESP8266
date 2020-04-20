@@ -3,6 +3,7 @@ import * as conf from './config.js';
 let config = {
     url: 'http://192.168.1.225',
     bedroomUrl: 'http://192.168.1.193',
+    meetingPiUrl: 'http://192.168.1.239',
     multi: true,
     mqttHost: "192.168.1.244",
     mqttPort: 1884
@@ -193,6 +194,7 @@ $(document).ready(function() {
                     currentColors.green = result.green;
                     currentColors.blue = result.blue;
                     pickr.setColor(colors);
+                    console.log(colors);
                 } else {
                     wSlider.noUiSlider.set(Math.floor((result.white / 255) * 100));
                 }
@@ -349,9 +351,7 @@ $(document).ready(function() {
     });
 
     function sendBedroomData(e){
-        console.log(e);
         let obj = e.toRGBA();
-        console.log(obj);
         let red = Math.floor(obj[0]);
         let green = Math.floor(obj[1]);
         let blue = Math.floor(obj[2]);
@@ -421,10 +421,10 @@ $(document).ready(function() {
                     currentBedroomColors.red = result.red;
                     currentBedroomColors.green = result.green;
                     currentBedroomColors.blue = result.blue;
+                    console.log(colors);
                     bedroomPickr.setColor(colors);
                 } else {
                     bedroomWhiteSlider.noUiSlider.set(Math.floor((result.white / 255) * 100));
-                    console.log(Math.floor(result.white));
                     if(Math.floor(result.white) > 0) {
 
                       bedroomLightBtnStatus = 1;
@@ -447,7 +447,7 @@ $(document).ready(function() {
     // Change your username and pass to your mqtt broker - example username and password filled in below
     let client = mqtt.connect({servers : [{ host: config.mqttHost, port: config.mqttPort}], username : conf.creds.mqttUser, password : conf.creds.mqttPass});
     getInitStatus();
-    client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status', 'garage/temperature', 'garage/humidity', 'dining/status', 'basement/status', 'tvDinnerScenario/status']);
+    client.subscribe(['led/kitchenRight/status', 'led/kitchenLeft/status', 'garage/temperature', 'garage/humidity', 'dining/status', 'basement/status', 'tvDinnerMode/status']);
     let rightLedStatus;
     let leftLedStatus;
     client.on("message", function (topic, payload) {
@@ -477,7 +477,7 @@ $(document).ready(function() {
             getDiningStatus(resp);
         } else if (topic == "basement/status") {
             getBasementStatus(resp);
-        } else if (topic == "tvDinnerScenario/status") {
+        } else if (topic == "tvDinnerMode/status") {
             getLEDStatus('rgb');
             getLEDStatus('white');
         }
@@ -494,7 +494,6 @@ $(document).ready(function() {
     }
 
     $('#btnToggle').off().on('change', function(e){
-        console.log(e);
         let state;
         if(globalStatus == 0) {
             state = 'on';
@@ -812,4 +811,46 @@ $(document).ready(function() {
             client.publish("basement/light/colorRGB", `{"status": "on", "brightness": 35,"red": ${newColor.red}, "green": ${newColor.green}, "blue": ${newColor.blue}}`);
     });
 
+    // Home tab code start
+
+    function getMeetingStatus() {
+        $.ajax({
+            url: `${config.meetingPiUrl}/led/meeting_status?${cacheBuster}`,
+            method: 'GET',
+            success: function (result) {
+                $('#inAMeeting').text(result.meeting_status);
+            }
+        });
+    }
+
+    getMeetingStatus();
+
+    $('#tvMode').off().on('click', function () {
+        client.publish('tvDinnerMode/tv');
+    });
+
+    $('#dinnerMode').off().on('click', function () {
+       client.publish('tvDinnerMode/dinner')
+    });
+
+    $('#sleepMode').off().on('click', function () {
+        client.publish('tvDinnerMode/sleep');
+    });
+
+    $('#bedMode').off().on('click', function () {
+        $.ajax({
+            url: `${config.bedroomUrl}/api/lr/?red=127&green=40&blue=0&${cacheBuster}`,
+            method: 'GET',
+            dataType: 'json',
+            cache: false,
+            success: function (result) {
+                bedroomWhiteSlider.noUiSlider.set(100);
+                bedroomSlider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
+                $('#bedroomSlider .noUi-connect').css('background', `rgb(127,40,0)`);
+            }
+        });
+        bedroomLightBtnStatus = 1;
+    });
+
+    // Home tab code end
 });
