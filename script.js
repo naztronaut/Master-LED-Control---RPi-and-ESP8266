@@ -445,7 +445,12 @@ $(document).ready(function() {
     let leftLedStatus;
     client.on("message", function (topic, payload) {
         let side;
-        let resp = JSON.parse(payload.toString());
+        let resp = '';
+        try {
+            resp = JSON.parse(payload.toString());
+        } catch {
+            console.log('bad json');
+        }
         // console.log(topic);
         if(topic == "led/kitchenLeft/status" || topic == "led/kitchenRight/status") {
             if (resp.side == 'right') {
@@ -471,8 +476,11 @@ $(document).ready(function() {
         } else if (topic == "basement/status") {
             getBasementStatus(resp);
         } else if (topic == "tvDinnerMode/status") {
-            getLEDStatus('rgb');
-            getLEDStatus('white');
+            console.log('tvDinnerMode');
+            // getLEDStatus('rgb');
+            // getLEDStatus('white');
+            getBedroomLEDStatus('rgb');
+            getBedroomLEDStatus('white');
         }
         btnStatus();
     });
@@ -812,6 +820,9 @@ $(document).ready(function() {
             method: 'GET',
             success: function (result) {
                 $('#inAMeeting').text(result.meeting_status);
+            },
+            error: function () {
+                $('#inAMeeting').html('<span class="mdi mdi-alert-circle-outline"></span>');
             }
         });
     }
@@ -831,28 +842,31 @@ $(document).ready(function() {
     });
 
     $('#bedMode').off().on('click', function () {
-        $.ajax({
-            url: `${config.bedroomUrl}/api/lr/?red=127&green=40&blue=0&${cacheBuster}`,
-            method: 'GET',
-            dataType: 'json',
-            cache: false,
-            success: function (result) {
-                bedroomWhiteSlider.noUiSlider.set(100);
-                bedroomSlider.noUiSlider.set(100); // sets slider value to 100 if color is changed manually
-                $('#bedroomSlider .noUi-connect').css('background', `rgb(127,40,0)`);
-            }
-        });
+        bedroomPickr.setColor(`rgb(127,40,0)`);
+        bedroomWhiteSlider.noUiSlider.set(25);
+        $("#bedroomBtn").prop("checked", true);
         bedroomLightBtnStatus = 1;
+        changeBedroomWhiteLed(63);
     });
 
     // Home tab code end
 
 
     // Get Statuses of all buttons
-    getLEDStatus('rgb');
-    getLEDStatus('white');
+    // getLEDStatus('rgb');
+    // getLEDStatus('white');
 
     // Get RGB Status so Color Picker in UI is set to that color on page load
-    getBedroomLEDStatus('rgb');
-    getBedroomLEDStatus('white');
+    // getBedroomLEDStatus('rgb');
+    // getBedroomLEDStatus('white');
+
+    $('#lr-tab').off().on('click', function () {
+        getLEDStatus('rgb');
+        getLEDStatus('white');
+    });
+
+    $('#bedroom-tab').off().on('click', function () {
+        getBedroomLEDStatus('rgb');
+        getBedroomLEDStatus('white');
+    });
 });

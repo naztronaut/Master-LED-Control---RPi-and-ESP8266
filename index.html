@@ -78,13 +78,24 @@
                             </div>
                     </div>
                 </div>
+
+
+                <!--HOME TAB START-->
               <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                  <div class="row text-center">
-                      <div class="card" style="width: 100%  ">
-                          <ul class="list-group list-group-flush">
-                              <li class="list-group-item d-flex justify-content-between"><span class="p-0"><span class="mdi mdi-webcam"></span> In a Meeting?:</span> <span class="tempHumidityAlign p-0"><span id="inAMeeting"></span></span></li>
-                          </ul>
-                       </div>
+                  <div class="row">
+                      <div class="col-md" style="margin-bottom: 1em;">
+                          <div class="card" style="width: 100%  ">
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between"><span class="p-0"><span class="mdi mdi-webcam"></span> In a Meeting?:</span>
+                                    <span class="tempHumidityAlign p-0">
+                                        <span id="inAMeeting">
+                                            <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="circle" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>
+                                        </span>
+                                    </span>
+                                </li>
+                              </ul>
+                           </div>
+                      </div>
                   </div>
                      <!--MODES START-->
                   <div class="row text-center">
@@ -107,6 +118,7 @@
                     </div>
                     <!--MODES END-->
               </div>
+                <!--HOME TAB END-->
 
                 <!--Living room tab content start-->
               <div class="tab-pane fade" id="livingRoom" role="tabpanel" aria-labelledby="lr-tab">
